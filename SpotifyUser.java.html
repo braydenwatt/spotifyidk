@@ -1,0 +1,167 @@
+<html>
+<head>
+<title>SpotifyUser.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d55fde; font-style: italic;}
+.s1 { color: #bbbbbb;}
+.s2 { color: #89ca78;}
+.s3 { color: #2bbac5;}
+.s4 { color: #5c6370; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#282c34">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SpotifyUser.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">java.util.ArrayList;</span>
+
+<span class="s0">public class </span><span class="s1">SpotifyUser {</span>
+    <span class="s0">private </span><span class="s1">String username;</span>
+    <span class="s0">private </span><span class="s1">ArrayList&lt;Playlist&gt; ownedPlaylists;</span>
+    <span class="s0">private </span><span class="s1">ArrayList&lt;Playlist&gt; followedPlaylists;</span>
+
+    <span class="s0">public </span><span class="s1">SpotifyUser(String username, ArrayList&lt;Playlist&gt; ownedPlaylists, ArrayList&lt;Playlist&gt; followedPlaylists) {</span>
+        <span class="s0">this</span><span class="s1">.username = username;</span>
+        <span class="s0">this</span><span class="s1">.ownedPlaylists = ownedPlaylists;</span>
+        <span class="s0">this</span><span class="s1">.followedPlaylists = followedPlaylists;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String toString() {</span>
+        <span class="s1">String output = </span><span class="s2">&quot;Username: &quot; </span><span class="s1">+ </span><span class="s0">this</span><span class="s1">.username + </span><span class="s2">&quot;</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">;</span>
+        <span class="s1">output += </span><span class="s2">&quot;Owned Playlists: &quot; </span><span class="s1">+ </span><span class="s2">&quot;</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">;</span>
+        <span class="s0">for</span><span class="s1">(Playlist playlist : </span><span class="s0">this</span><span class="s1">.ownedPlaylists) {</span>
+            <span class="s1">output += playlist.getTitle();</span>
+        <span class="s1">}</span>
+        <span class="s1">output += </span><span class="s2">&quot;</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">;</span>
+        <span class="s1">output += </span><span class="s2">&quot;Followed Playlists: &quot; </span><span class="s1">+ </span><span class="s2">&quot;</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">;</span>
+        <span class="s0">for</span><span class="s1">(Playlist playlist : </span><span class="s0">this</span><span class="s1">.followedPlaylists) {</span>
+            <span class="s1">output += playlist.getTitle();</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">output;</span>
+    <span class="s1">}</span>
+    <span class="s0">public void </span><span class="s1">addPlaylistToOwned(Playlist playlist) {</span>
+        <span class="s0">this</span><span class="s1">.ownedPlaylists.add(playlist);</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">Playlist createPlaylist(String title, Song firstSong) {</span>
+        <span class="s0">for</span><span class="s1">(Playlist playlist : </span><span class="s0">this</span><span class="s1">.ownedPlaylists) {</span>
+            <span class="s1">System.out.println(playlist.getTitle());</span>
+            <span class="s0">if</span><span class="s1">(playlist.getTitle().equals(title)){</span>
+                <span class="s0">return null</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s1">Playlist playlist = </span><span class="s0">new </span><span class="s1">Playlist(title, </span><span class="s0">this</span><span class="s1">, </span><span class="s0">new </span><span class="s1">ArrayList&lt;Song&gt;());</span>
+        <span class="s1">playlist.addSong(firstSong);</span>
+        <span class="s0">return </span><span class="s1">playlist;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">Playlist getOwnedPlaylist(String playlistTitle) {</span>
+        <span class="s0">for</span><span class="s1">(Playlist playlist : </span><span class="s0">this</span><span class="s1">.ownedPlaylists) {</span>
+            <span class="s0">if </span><span class="s1">(playlist.getTitle().equals(playlistTitle)) {</span>
+                <span class="s0">return </span><span class="s1">playlist;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return null</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">Playlist deleteOwnedPlaylist(String playlistTitle) {</span>
+        <span class="s0">this</span><span class="s1">.ownedPlaylists.remove(</span><span class="s0">this</span><span class="s1">.getOwnedPlaylist(playlistTitle));</span>
+        <span class="s0">return null</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s4">//based on PLAYLIST or playlist title</span>
+    <span class="s0">private boolean </span><span class="s1">playlistExists(Playlist playlist) {</span>
+        <span class="s0">for </span><span class="s1">(Playlist ownedPlaylist : </span><span class="s0">this</span><span class="s1">.ownedPlaylists) {</span>
+            <span class="s0">if </span><span class="s1">(ownedPlaylist.getTitle().equals(playlist.getTitle())) {</span>
+                <span class="s0">return true</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return false</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private boolean </span><span class="s1">playlistExistsFollowed(Playlist playlist) {</span>
+        <span class="s0">for </span><span class="s1">(Playlist followedPlaytlist : </span><span class="s0">this</span><span class="s1">.followedPlaylists) {</span>
+            <span class="s0">if </span><span class="s1">(followedPlaytlist.getTitle().equals(playlist.getTitle())) {</span>
+                <span class="s0">return true</span><span class="s1">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return false</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s0">private boolean </span><span class="s1">playlistContainsSong(Playlist playlist, Song song) {</span>
+       <span class="s0">if</span><span class="s1">(playlist.containsSong(song)){</span>
+           <span class="s0">return true</span><span class="s1">;</span>
+       <span class="s1">}</span>
+        <span class="s0">return false</span><span class="s1">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">addToOwnedPlaylist(Playlist playlist, Song song) {</span>
+        <span class="s0">if</span><span class="s1">(!(playlist.getOwner().getUsername().equals(</span><span class="s0">this</span><span class="s1">.getUsername()))){</span>
+            <span class="s1">System.out.println(</span><span class="s0">this</span><span class="s1">.username + </span><span class="s2">&quot; does not own the playlist&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if </span><span class="s1">(!playlistExists(playlist)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist does not exist in owned&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if </span><span class="s1">(playlistContainsSong(playlist, song)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist already contains song&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+    <span class="s1">playlist.addSong(song);</span>
+    <span class="s0">return true</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public boolean </span><span class="s1">removeFromOwnedPlaylist(Playlist playlist, Song song) {</span>
+        <span class="s0">if</span><span class="s1">(!(playlist.getOwner().getUsername().equals(</span><span class="s0">this</span><span class="s1">.getUsername()))){</span>
+            <span class="s1">System.out.println(</span><span class="s0">this</span><span class="s1">.username + </span><span class="s2">&quot; does not own the playlist&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if </span><span class="s1">(!playlistExists(playlist)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist does not exist in owned&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if </span><span class="s1">(playlistContainsSong(playlist, song)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist already contains song&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s1">playlist.removeSong(song);</span>
+        <span class="s0">return true</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public boolean </span><span class="s1">addToFollowedPlaylist(Playlist playlist, Song song) {</span>
+        <span class="s0">if</span><span class="s1">(!(playlist.getOwner().getUsername().equals(</span><span class="s0">this</span><span class="s1">.getUsername()))){</span>
+            <span class="s1">System.out.println(</span><span class="s0">this</span><span class="s1">.username + </span><span class="s2">&quot; does not own the playlist&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if </span><span class="s1">(!playlistExistsFollowed(playlist)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist does not exist in followed&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if </span><span class="s1">(playlistContainsSong(playlist, song)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist already contains song&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s1">playlist.addSong(song);</span>
+        <span class="s0">return true</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public boolean </span><span class="s1">removeFromFollowedPlaylist(Playlist playlist, Song song) {</span>
+        <span class="s0">if</span><span class="s1">(!(playlist.getOwner().getUsername().equals(</span><span class="s0">this</span><span class="s1">.getUsername()))){</span>
+            <span class="s1">System.out.println(</span><span class="s0">this</span><span class="s1">.username + </span><span class="s2">&quot; does not own the playlist&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if </span><span class="s1">(!playlistExistsFollowed(playlist)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist does not exist in followed&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if </span><span class="s1">(playlistContainsSong(playlist, song)) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Playlist already contains song&quot;</span><span class="s1">);</span>
+            <span class="s0">return false</span><span class="s1">;</span>
+        <span class="s1">}</span>
+        <span class="s1">playlist.removeSong(song);</span>
+        <span class="s0">return true</span><span class="s1">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">String getUsername(){</span>
+        <span class="s0">return this</span><span class="s1">.username;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
